@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Streetwear Grid with Color Filters and Zoom Lens</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="intro-overlay"></div>
+
+    <div class="grid-wrapper">
+      <div class="grid" id="grid">
+        <!-- Grid-elementer genereres her av JavaScript -->
+      </div>
+      <!-- Overlayet er kun visuelt, kan fjernes hvis ønskelig -->
+      <div class="overlay">
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+      </div>
+    </div>
+
+    <div class="bottom-controls">
+      <div class="filters">
+        <button id="btnSneakers" aria-label="Sneakers"></button>
+        <button id="btnHoodies" aria-label="Hoodies"></button>
+        <button id="btnCaps" aria-label="Caps"></button>
+      </div>
+      <div class="colors" id="colorFilters">
+        <!-- Fargeknapper genereres her av JavaScript -->
+      </div>
+    </div>
+
+    <!-- Modal HTML -->
+    <div id="modal" class="modal">
+      <div class="modal-content" id="modalContent">
+        <span id="modalClose" class="modal-close">×</span>
+        <!-- Lens legges *inni* modal-content slik at den posisjoneres relativt -->
+        <div id="lens" class="lens">
+          <!-- Bildet inni linsen legges til av JS -->
+        </div>
+        <img id="modalImg" alt="Modal image" />
+        <!-- Alltid lurt med alt-tekst -->
+        <img
+          id="modalCartIcon"
+          class="modal-cart-icon"
+          src="img/cart.png"
+          alt="Handlekurv ikon"
+        />
+        <button id="zoomToggle" class="zoom-toggle">Enable Lens</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

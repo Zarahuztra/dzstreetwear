@@ -1,0 +1,447 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: sans-serif;
+  background-image: url("img/wh1.jpg");
+  background-size: cover; /* <--- DENNE GJØR JOBBEN! */
+  background-position: center center; /* Sentrerer bildet (viktig med 'cover') */
+  background-repeat: no-repeat; /* Forhindrer gjentakelse */
+  /* --- Slutt på nøkkel-egenskaper --- */
+
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.grid-wrapper {
+  width: 850px; /* Juster bredde etter behov */
+  height: 430px; /* Juster høyde etter behov */
+  position: relative;
+
+  overflow: hidden; /* Skjuler elementer som animeres ut */
+
+  background-image: url("img/dzsw1.jpg"); /* <-- ENDRE DENNE STIEN */
+  background-size: cover; /* Skalerer bildet til å dekke hele området (kan beskjære) */
+  background-position: center center; /* Sentrerer bildet */
+  background-repeat: no-repeat; /* Forhindrer at bildet repeteres/flislegges */
+  margin-top: 10vh;
+  /* ----------------------------- */
+}
+
+.grid {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 0; /* Ingen mellomrom mellom ruteelementene */
+}
+.item {
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative; /* Nødvendig for absolutt posisjonering av overlay/animasjoner */
+}
+.item img {
+  display: block; /* Fjerner ekstra plass under bildet */
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Dekker hele ruten, kan beskjære */
+  object-position: center center; /* Sentrerer bildet */
+  transition: transform 0.3s ease; /* Myk overgang for zoom ved hover */
+}
+/* NY REGEL: Skaler opp bildet når .item hoveres */
+.item:hover img {
+  transform: scale(
+    1.1
+  ); /* Skalerer til 110%. Juster tallet (f.eks. 1.05) etter ønske */
+}
+
+/* Hjelpe-overlay for å vise rutenettet */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  pointer-events: none; /* Klikk går gjennom til elementene under */
+}
+.overlay .cell {
+  border: 5px solid #0f314a; /* Tykk blå ramme */
+  box-sizing: border-box; /* Inkluderer ramme i størrelsen */
+}
+
+/* Styling for filterknapper */
+.filters,
+.colors {
+  display: flex;
+  gap: 12px;
+
+  flex-wrap: wrap; /* Tillater linjeskift hvis for mange knapper */
+  justify-content: center;
+}
+.filters button,
+.colors button {
+  min-width: 80px; /* Minimum bredde for fargeknapper */
+  height: 120px; /* Høyde for filter-illustrasjoner */
+  border: 2px solid transparent; /* Ramme for aktiv/hover */
+  background-color: transparent;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: opacity 0.2s, border-color 0.2s, background-color 0.2s;
+  padding: 5px; /* Litt luft rundt tekst/illustrasjon */
+  box-sizing: border-box;
+  border-radius: 10px; /* <-- FELLESRADIUS (juster etter ønske) */
+}
+
+/* Spesifikk bredde for illustrasjonsknapper */
+.filters button {
+  width: 200px;
+
+  gap: 10px;
+  height: 120px;
+  border-radius: 15%;
+}
+/* Styling for fargeknapper (uten bilde) */
+.colors button {
+  width: 20px; /* Gjør dem kvadratiske */
+  height: 40px;
+
+  min-width: 0; /* Fjern minimumsbredde */
+  border-radius: 15%; /* Sirkulære knapper (eller bruk f.eks. 8px for avrundede firkanter) */
+  border: 2px solid rgba(0, 0, 0, 0.2); /* Legg til en diskret ramme */
+  font-size: 0; /* Skjuler eventuell tekst som lekker gjennom */
+  color: transparent; /* Skjuler tekst */
+}
+
+.bottom-controls {
+  background: transparent;
+  padding: 15px 20px; /* La til litt sidepadding også */
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px; /* Økte gapet litt */
+  margin-top: 20px; /* Legg til litt luft mellom grid og knapper */
+  border-radius: 15%; /* Valgfri avrunding */
+  width: auto; /* La bredden bestemmes av innholdet */
+  max-width: 850px; /* Samme som grid-wrapper for konsistens */
+  box-sizing: border-box;
+}
+
+.filters button:hover,
+.colors button:hover {
+  opacity: 0.8;
+}
+.filters button.active,
+.colors button.active {
+  /* Bruk .active for tydeligere markering */
+  border: transparent; /* Tykkere/annen farge på aktiv ramme */
+  opacity: 1;
+  border-radius: 15%;
+}
+
+.colors button.active {
+  transform: scale(1.1); /* Litt større når aktiv */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+}
+.filters button:focus,
+.colors button:focus {
+  outline: none; /* Fjerner standard blå outline */
+}
+
+/* Bakgrunnsbilder for hovedfilterknapper */
+#btnSneakers {
+  background-image: url("img/illustration/illshoe1.jpg");
+}
+#btnHoodies {
+  background-image: url("img/illustration/illhood1.jpg");
+}
+#btnCaps {
+  background-image: url("img/illustration/illcap1.jpg");
+}
+
+/* Fargede versjoner for aktiv/hover */
+#btnSneakers.active,
+#btnSneakers:hover {
+  background-image: url("img/illustration/illcolshoe1.jpg");
+}
+#btnHoodies.active,
+#btnHoodies:hover {
+  background-image: url("img/illustration/illcolhood1.jpg");
+}
+#btnCaps.active,
+#btnCaps:hover {
+  background-image: url("img/illustration/illcolcap1.jpg");
+}
+
+#intro-overlay {
+  position: fixed; /* Holder seg fast ift. viewport */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Dekker hele bredden */
+  height: 100vh; /* Dekker hele høyden */
+  background-image: url("img/dzsw1.jpg"); /* <-- VIKTIG: Bytt ut stien! */
+  background-size: cover; /* Dekker hele flate, kan beskjære */
+  background-position: center center; /* Sentrerer bildet */
+  background-repeat: no-repeat;
+  background-color: #fff; /* Fallback-farge hvis bildet ikke lastes */
+  z-index: 1000; /* Sørger for at den ligger over alt annet innhold */
+  opacity: 1; /* Starter fullt synlig */
+  /* Definerer overgangen for opacity */
+  transition: opacity 5s ease-out; /* <-- Selve fade-effekten (0.3 sekunder) */
+  pointer-events: auto; /* Kan interageres med i starten (ikke strengt nødvendig her) */
+}
+
+#intro-overlay.fade-out {
+  opacity: 0; /* Blir usynlig */
+  pointer-events: none; /* Viktig: Lar klikk gå gjennom til innholdet under når den er usynlig */
+}
+
+/* Modal (popup-vindu) */
+.modal {
+  display: none; /* Skjult som standard */
+  position: fixed; /* Dekker hele skjermen */
+  z-index: 998;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Mørk gjennomsiktig bakgrunn */
+  justify-content: center; /* Sentrerer innholdet horisontalt */
+  align-items: center; /* Sentrerer innholdet vertikalt */
+}
+/* Vises når .show-klassen legges til */
+.modal.show {
+  display: flex;
+}
+.modal-content {
+  position: relative; /* Viktig for absolutt posisjonering av linsen og lukkeknapp */
+  width: clamp(300px, 70vw, 90vw);
+  height: auto;
+  max-width: 90vw;
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden; /* Skjuler deler av bildet som går utenfor */
+  /* Animasjon for innfading/skalering */
+  transform: scale(0.7);
+  opacity: 0;
+  transform-origin: center center;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+.modal.show .modal-content {
+  transform: scale(1);
+  opacity: 1;
+}
+.modal-content img#modalImg {
+  /* Vær spesifikk for hovedbildet */
+  display: block; /* Fjerner evt. ekstra bunnmarg */
+  width: 100%; /* Fyller bredden av modal-content */
+  height: auto; /* Beholder sideforholdet */
+  max-width: 100%; /* Maks bredde ift. viewport */
+  max-height: 100%; /* Maks høyde ift. viewport */
+  cursor: crosshair; /* Endre markør når over bildet */
+}
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #333;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.7); /* Litt gjennomsiktig bakgrunn */
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 28px; /* Sentrerer X vertikalt */
+  text-align: center;
+  z-index: 10; /* Over linsen */
+}
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.9);
+  color: #000;
+}
+
+/* --- Stil for handlekurv-ikon i modal --- */
+.modal-cart-icon {
+  position: absolute; /* Posisjoneres relativt til .modal-content */
+  top: 15px; /* Avstand fra toppen (juster) */
+  left: 15px; /* Avstand fra venstre (juster) */
+  width: 80px; /* Bredde på ikonet (juster) */
+  height: 60px; /* Høyde på ikonet (juster) */
+  z-index: 6; /* Høyere enn .lens (z-index 5), lavere enn .modal-close (z-index 10) */
+  display: none; /* Skjult som standard */
+  /* Valgfritt: Legg til litt effekt hvis ønskelig */
+  /* cursor: pointer; */ /* Hvis det skal bli klikkbart */
+  /* opacity: 0.9; */
+}
+.modal-cart-icon:hover {
+  scale: 1.15; /* Litt større ved hover */
+  cursor: pointer; /* Endre markør ved hover */
+}
+
+/* Zoom Lens */
+.lens {
+  position: absolute; /* Posisjoneres ift. modal-content */
+  border: 3px solid #333; /* Tykkere ramme */
+  width: 150px; /* Størrelse på forstørrelsesglasset */
+  height: 150px;
+  overflow: hidden; /* Skjuler bilde utenfor linsen */
+  display: none; /* Skjult som standard */
+  cursor: crosshair; /* Samme som hovedbildet */
+  pointer-events: none; /* Tillater at musehendelser går til bildet under */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Skyggeeffekt */
+  border-radius: 50%; /* Sirkulær linse (valgfritt) */
+  z-index: 5; /* Under lukkeknappen, over bildet? Nei, må være over bildet */
+}
+.lens img {
+  position: absolute; /* Posisjoneres inni linsen */
+  /* Bredde og høyde settes av JavaScript basert på ZOOM_FACTOR */
+  /* FJERN DENNE: width: 200%; */
+  /* FJERN DENNE: height: auto; */
+  display: block;
+}
+
+/* Zoom Toggle Button */
+.zoom-toggle {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 15px;
+  background: rgba(51, 51, 51, 0.8); /* Mørk gjennomsiktig */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  z-index: 10; /* Over linsen */
+  font-size: 14px;
+}
+.zoom-toggle:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* --- Grid Item Animasjoner --- */
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+@keyframes slideOutUp {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+@keyframes slideOutDown {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+@keyframes slideInUp {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes slideInDown {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.item.exit-left {
+  animation: slideOutLeft 0.3s forwards;
+}
+.item.exit-right {
+  animation: slideOutRight 0.3s forwards;
+}
+.item.exit-up {
+  animation: slideOutUp 0.3s forwards;
+}
+.item.exit-down {
+  animation: slideOutDown 0.3s forwards;
+}
+
+/* Bruker motsatt retning for inn-animasjon for en finere effekt */
+.item.enter-left {
+  animation: slideInRight 0.3s forwards;
+}
+.item.enter-right {
+  animation: slideInLeft 0.3s forwards;
+}
+.item.enter-up {
+  animation: slideInDown 0.3s forwards;
+}
+.item.enter-down {
+  animation: slideInUp 0.3s forwards;
+}
+/* --- Slutt på Grid Item Animasjoner --- */
